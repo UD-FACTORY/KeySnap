@@ -199,22 +199,22 @@
 
     /* Screenshots */
     .figure-container {
-      margin: 14px 0 18px 0;
+      margin: 10px 0 14px 0;
       text-align: center;
     }
 
     .figure-img {
       width: 100%;
-      max-width: 580px;
+      max-width: 510px;
       border-radius: 8px;
       border: 1px solid #CBD5E1;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
 
     .figure-caption {
-      font-size: 9pt;
+      font-size: 8.5pt;
       color: #64748B;
-      margin-top: 6px;
+      margin-top: 5px;
       font-weight: 500;
     }
 
@@ -297,11 +297,11 @@
         <li><strong>1. 프로그램 개요 및 특징</strong> ··························································· 3</li>
         <li><strong>2. 설치 및 시작하기</strong> ······································································ 4</li>
         <li><strong>3. 텍스트 대치 및 단축어 관리</strong> ························································· 5</li>
-        <li><strong>4. 치환 실행 단축키 (트리거 키) 설정</strong> ·············································· 6</li>
-        <li><strong>5. 예외 프로그램 관리 (블랙리스트)</strong> ·················································· 7</li>
-        <li><strong>6. 동적 매크로 태그 활용</strong> ·································································· 8</li>
-        <li><strong>7. 데이터 백업 및 복원 (가져오기/내보내기)</strong> ····································· 8</li>
-        <li><strong>8. 문제 해결 및 FAQ</strong> ········································································· 9</li>
+        <li><strong>4. 치환 실행 단축키 (트리거 키) 설정</strong> ·············································· 7</li>
+        <li><strong>5. 예외 프로그램 관리 (블랙리스트)</strong> ·················································· 8</li>
+        <li><strong>6. 동적 매크로 태그 및 내장 가이드</strong> ················································· 9</li>
+        <li><strong>7. 데이터 백업 및 복원 (가져오기/내보내기)</strong> ····································· 9</li>
+        <li><strong>8. 문제 해결 및 FAQ</strong> ····································································· 10</li>
       </ul>
     </div>
   </div>
@@ -385,67 +385,96 @@
 
   <!-- CHAPTER 3 -->
   <h1>3. 텍스트 대치 및 단축어 관리</h1>
-  
+  <p>
+    KeySnap의 가장 핵심적인 기능은 등록된 단축어를 감지하여 긴 문장이나 서식 텍스트로 즉각 변환하는 것입니다.
+    카카오톡, 슬랙, 웹 브라우저, 워드 등 사용자가 작업 중인 모든 응용 프로그램에서 손쉽게 활용할 수 있습니다.
+  </p>
+
   <h2>단축어 작동 원리</h2>
   <ol>
-    <li>원하는 문서 작성기, 메신저, 웹 폼 등에서 등록된 <strong>단축어</strong>(예: <span class="badge-primary">ㄱㅅ</span> 또는 <span class="badge-primary">!email</span>)를 타이핑합니다.</li>
+    <li>문서 작성기, 메신저, 웹 폼 등에서 등록된 <strong>단축어</strong>(예: <span class="badge-primary">ㅇㅈ</span> 또는 <span class="badge-primary">!email</span>)를 타이핑합니다.</li>
     <li>설정된 <strong>치환 실행 단축키</strong>(기본값: <span class="kbd">Tab</span>)를 누릅니다.</li>
-    <li>직전에 입력된 단축어가 지워지며, 미리 설정된 긴 대치어로 눈 깜짝할 사이에 치환됩니다!</li>
+    <li>직전에 입력된 단축어가 자동으로 지워지며, 미리 설정된 긴 대치 문구로 눈 깜짝할 사이에 치환됩니다!</li>
   </ol>
 
-  <div class="callout tip">
-    <strong>💡 한글 초성/자모 단축어 팁:</strong><br>
-    한/영 전환 키를 누를 필요 없이 자판 그대로 <span class="badge-primary">ㅇㅈ</span>, <span class="badge-primary">ㄱㅅ</span>, <span class="badge-primary">ㅈㄱ</span> 등을 입력하면 영문 타자 버퍼(<span class="kbd">dw</span>, <span class="kbd">rt</span>, <span class="kbd">wr</span>)를 지능적으로 분석하여 한글 단축어로 자동 매칭합니다.
+  <div class="figure-container no-break">
+    <img src="images/screenshot_shortcuts.png" class="figure-img" alt="KeySnap 단축어 관리 화면">
+    <div class="figure-caption">▲ [그림 1] KeySnap 단축어 관리 및 등록 목록 화면</div>
   </div>
+
+  <div class="page-break"></div>
 
   <h2>단축어 추가 및 관리 방법</h2>
   <div class="step-box">
     <div class="step-title">1) 새 단축어 추가</div>
-    <p>메인 창 좌측의 <strong>[단축어 관리]</strong> 탭에서 우측 상단의 <strong>[+ 새 단축어 추가]</strong> 버튼을 클릭합니다. 대화상자에 사용할 단축어와 변경될 대치어를 입력하고 저장합니다.</p>
+    <p>메인 창 좌측의 <strong>[단축어 관리]</strong> 탭에서 우측 상단의 <strong>[+ 단축어 추가]</strong> 버튼을 클릭합니다. 대화상자에 사용할 단축어와 변경될 대치 문구를 입력하고 저장합니다.</p>
   </div>
   <div class="step-box">
     <div class="step-title">2) 수정 및 삭제</div>
-    <p>목록에서 수정하려는 항목을 더블클릭하거나 마우스 우클릭하여 수정할 수 있으며, 불필요한 단축어는 [삭제] 버튼으로 언제든 제거할 수 있습니다.</p>
+    <p>목록에서 수정하려는 항목의 <strong>[수정]</strong> 버튼을 누르거나 더블클릭하여 내용을 편집할 수 있으며, 불필요한 단축어는 <strong>[삭제]</strong> 버튼으로 언제든 제거할 수 있습니다.</p>
   </div>
   <div class="step-box">
     <div class="step-title">3) 개별 사용/중지 스위치</div>
     <p>자주 쓰지 않는 단축어는 삭제할 필요 없이 목록 좌측의 <strong>상태 토글 스위치</strong>를 클릭하여 즉시 비활성화할 수 있습니다.</p>
   </div>
 
-  <h2>기본 추천 단축어 예시</h2>
+  <div class="callout tip">
+    <strong>💡 한글 초성/자모 단축어 팁:</strong><br>
+    한/영 전환 키를 누를 필요 없이 자판 그대로 <span class="badge-primary">ㅇㅈ</span>, <span class="badge-primary">ㄱㅅ</span>, <span class="badge-primary">ㅈㄱ</span> 등을 입력하면 영문 타자 버퍼(<span class="kbd">dw</span>, <span class="kbd">rt</span>, <span class="kbd">wr</span>)를 지능적으로 분석하여 한글 단축어로 자동 매칭합니다.
+  </div>
+
+  <h2>기본 등록 단축어 예시</h2>
   <table>
     <thead>
       <tr>
-        <th>단축어</th>
-        <th>대치어</th>
-        <th>분류</th>
+        <th style="width: 20%;">단축어</th>
+        <th>대치 문구</th>
+        <th style="width: 25%;">변환 방식</th>
+        <th style="width: 15%;">그룹</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><span class="badge-primary">ㅇㅈ</span></td>
         <td>인정합니다. 👍</td>
+        <td>즉시 변환</td>
         <td>일상</td>
       </tr>
       <tr>
         <td><span class="badge-primary">ㄱㅅ</span></td>
-        <td>감사합니다! 좋은 하루 보내세요. 😊</td>
+        <td>감사합니다! 좋은 하루 보내세요.... 😊</td>
+        <td>즉시 변환</td>
         <td>인사</td>
       </tr>
       <tr>
         <td><span class="badge-primary">ㅈㄱ</span></td>
         <td>지금 통화 가능하신가요?</td>
+        <td>즉시 변환</td>
         <td>업무</td>
       </tr>
       <tr>
         <td><span class="badge-primary">!email</span></td>
         <td>user@example.com</td>
+        <td>즉시 변환</td>
         <td>개인정보</td>
       </tr>
       <tr>
-        <td><span class="badge-primary">!today</span></td>
-        <td>{{today}} (현재 날짜 자동 치환)</td>
+        <td><span class="badge-primary">!date</span></td>
+        <td>{{today}} (현재 오늘 날짜 자동 입력)</td>
+        <td>즉시 변환</td>
         <td>매크로</td>
+      </tr>
+      <tr>
+        <td><span class="badge-primary">!time</span></td>
+        <td>{{time}} (현재 시각 자동 입력)</td>
+        <td>즉시 변환</td>
+        <td>매크로</td>
+      </tr>
+      <tr>
+        <td><span class="badge-primary">btw</span></td>
+        <td>by the way</td>
+        <td>트리거 키 (Space/Enter)</td>
+        <td>영어</td>
       </tr>
     </tbody>
   </table>
@@ -460,7 +489,7 @@
 
   <div class="figure-container no-break">
     <img src="images/screenshot_settings.png" class="figure-img" alt="KeySnap 환경설정 화면">
-    <div class="figure-caption">▲ [그림 1] KeySnap 환경설정 및 치환 실행 단축키 설정 화면</div>
+    <div class="figure-caption">▲ [그림 2] KeySnap 환경설정 및 치환 실행 단축키 설정 화면</div>
   </div>
 
   <h2>단축키 변경 방법</h2>
@@ -468,7 +497,7 @@
     <li>좌측 사이드바에서 <strong>[환경설정]</strong> 메뉴를 클릭합니다.</li>
     <li>'⚡ 치환 실행 단축키 및 클립보드' 섹션에서 <span class="badge-primary">⌨ 단축키 변경</span> 버튼을 누릅니다.</li>
     <li>화면에 <span style="color:#DC2626; font-weight:bold;">🔴 원하는 키 또는 조합키를 누르세요... (취소: ESC)</span> 알림이 나타납니다.</li>
-    <li>키보드에서 원하는 키(예: <span class="kbd">Tab</span>, <span class="kbd">Space</span>, <span class="kbd">Ctrl</span>+<span class="kbd">Space</span>, <span class="kbd">Shift</span>+<span class="kbd">Space</span>, <span class="kbd">Alt</span>+<span class="kbd">Q</span>, <span class="kbd">F8</span>, <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> 등)를 누르면 즉각 감지되어 저장됩니다.</li>
+    <li>키보드에서 원하는 키(예: <span class="kbd">Tab</span>, <span class="kbd">Space</span>, <span class="kbd">Ctrl</span>+<span class="kbd">Space</span>, <span class="kbd">Shift</span>+<span class="kbd">Space</span>, <span class="kbd">Alt</span>+<span class="kbd">Q</span>, <span class="kbd">F8</span> 등)를 누르면 즉각 감지되어 저장됩니다.</li>
     <li>언제든 <span class="badge-primary">기본값 (Tab)</span> 버튼을 눌러 초기 상태로 손쉽게 되돌릴 수 있습니다.</li>
   </ol>
 
@@ -487,16 +516,16 @@
 
   <div class="figure-container no-break">
     <img src="images/screenshot_exclusions.png" class="figure-img" alt="KeySnap 예외 프로그램 화면">
-    <div class="figure-caption">▲ [그림 2] KeySnap 예외 프로그램 관리 화면</div>
+    <div class="figure-caption">▲ [그림 3] KeySnap 예외 프로그램 관리 화면</div>
   </div>
 
   <h2>예외 프로그램 등록 방법</h2>
   <ul>
     <li><strong>실행 중인 창에서 선택 (가장 편리):</strong><br>
-      우측 상단의 <strong>[+ 실행 중인 앱에서 추가]</strong>를 누르면 현재 컴퓨터에서 켜져 있는 창 목록이 표시되며, 원하는 프로그램을 클릭 한 번으로 간편하게 등록할 수 있습니다.
+      우측 상단의 <strong>[+ 프로그램 추가]</strong>를 누르면 현재 컴퓨터에서 켜져 있는 창 목록이 표시되며, 원하는 프로그램을 클릭 한 번으로 간편하게 등록할 수 있습니다.
     </li>
     <li><strong>파일 찾아보기 (.exe):</strong><br>
-      실행 파일 경로를 직접 선택하여 등록하고 싶을 때는 <strong>[파일 찾아보기]</strong> 버튼을 사용합니다.
+      실행 파일 경로를 직접 선택하여 등록하고 싶을 때는 <strong>[파일 찾아보기(.exe)]</strong> 버튼을 사용합니다.
     </li>
     <li><strong>기본 프리셋 제공:</strong><br>
       리그 오브 레전드(League of Legends), 오버워치(Overwatch), 발로란트(Valorant) 등 대표적인 게임들이 기본 예외 프로그램으로 탑재되어 있습니다.
@@ -506,11 +535,17 @@
   <div class="page-break"></div>
 
   <!-- CHAPTER 6 & 7 -->
-  <h1>6. 동적 매크로 태그 활용</h1>
+  <h1>6. 동적 매크로 태그 및 내장 가이드</h1>
   <p>
     단축어 등록 시 아래의 매크로 코드를 본문에 포함하면, 치환이 일어나는 순간의 실시간 동적 데이터로 자동 변환됩니다.
   </p>
 
+  <div class="figure-container no-break">
+    <img src="images/screenshot_guide.png" class="figure-img" alt="KeySnap 사용 가이드 및 팁 화면">
+    <div class="figure-caption">▲ [그림 4] KeySnap 내장 사용 가이드 및 팁 화면</div>
+  </div>
+
+  <h2>동적 매크로 태그 안내</h2>
   <table>
     <thead>
       <tr>
@@ -523,12 +558,12 @@
       <tr>
         <td><span class="kbd">{{today}}</span></td>
         <td><span class="kbd">!오늘날짜</span></td>
-        <td>현재 날짜를 <span class="badge-primary">YYYY-MM-DD</span> 포맷으로 자동 입력<br><em>예: 2026-09-23</em></td>
+        <td>현재 날짜를 <span class="badge-primary">YYYY-MM-DD</span> 포맷으로 자동 입력 (예: 2026-09-23)</td>
       </tr>
       <tr>
         <td><span class="kbd">{{time}}</span></td>
         <td><span class="kbd">!현재시간</span></td>
-        <td>현재 시각을 <span class="badge-primary">HH:mm:ss</span> 포맷으로 자동 입력<br><em>예: 16:30:15</em></td>
+        <td>현재 시각을 <span class="badge-primary">HH:mm:ss</span> 포맷으로 자동 입력 (예: 15:30:00)</td>
       </tr>
       <tr>
         <td><span class="kbd">{{clipboard}}</span></td>
@@ -538,19 +573,7 @@
     </tbody>
   </table>
 
-  <h2>실무 활용 예시</h2>
-  <div class="step-box">
-    <div class="step-title">예시 1) 고객 상담 완료 템플릿</div>
-    <p>단축어: <span class="badge-primary">!상담</span></p>
-    <p style="background: #F8FAFC; padding: 8px; border-radius: 6px; font-size: 9.5pt;">
-      [고객 응대 일지]<br>
-      일자: {{today}} ({{time}})<br>
-      접수 내용: {{clipboard}}<br>
-      처리 결과: 정상 안내 완료되었습니다. 감사합니다.
-    </p>
-  </div>
-
-  <h1 style="margin-top: 30px;">7. 데이터 백업 및 복원</h1>
+  <h1 style="margin-top: 24px;">7. 데이터 백업 및 복원</h1>
   <p>
     새로운 PC로 컴퓨터를 교체하거나 다른 동료와 단축어 목록을 공유하고 싶을 때, 단 한 번의 클릭으로 데이터를 내보내고 가져올 수 있습니다.
   </p>
