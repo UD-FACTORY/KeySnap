@@ -1,0 +1,24 @@
+## Build & Binary Outputs
+[Bb]in/
+[Oo]bj/
+dist/
+publish_selfcontained/
+*.exe
+!installer/*.iss
+
+## Visual Studio & IDE
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+## Logs & Cache
+*.log
+*.tmp
+*.pdb
+
+## OS Generated
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
