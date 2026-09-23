@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>KeySnap 사용 설명서 - 유디연구소</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 16mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 9pt;
+        color: #94A3B8;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Malgun Gothic', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1E293B;
+      line-height: 1.6;
+      font-size: 10.5pt;
+      background: #FFFFFF;
+    }
+
+    /* Print Break Utilities */
+    .page-break {
+      page-break-before: always;
+    }
+    .no-break {
+      page-break-inside: avoid;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 230mm;
+      padding: 10mm 10mm 0 10mm;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .cover-badge {
+      display: inline-block;
+      background: #EEF2FF;
+      color: #4338CA;
+      font-weight: 700;
+      font-size: 11pt;
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: 1px solid #C7D2FE;
+      margin-bottom: 25px;
+    }
+
+    .cover-icon {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 25px auto;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
+    }
+
+    .cover-title {
+      font-size: 36pt;
+      font-weight: 900;
+      color: #0F172A;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .cover-subtitle {
+      font-size: 15pt;
+      color: #4F46E5;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .cover-desc {
+      font-size: 11pt;
+      color: #64748B;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .cover-meta {
+      border-top: 1.5px solid #E2E8F0;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      color: #64748B;
+      font-size: 10pt;
+    }
+
+    .cover-meta div {
+      text-align: left;
+    }
+    .cover-meta div:last-child {
+      text-align: right;
+    }
+
+    /* Section Styles */
+    h1 {
+      font-size: 16pt;
+      font-weight: 800;
+      color: #0F172A;
+      border-bottom: 2px solid #4F46E5;
+      padding-bottom: 6px;
+      margin-top: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1E293B;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      border-left: 4px solid #4F46E5;
+      padding-left: 8px;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin-bottom: 8px;
+      color: #334155;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    /* Visual Components */
+    .callout {
+      background: #F8FAFC;
+      border-left: 4px solid #4F46E5;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin: 10px 0 12px 0;
+      font-size: 9.5pt;
+    }
+
+    .callout.tip {
+      background: #F0FDF4;
+      border-left-color: #10B981;
+    }
+
+    .callout.warning {
+      background: #FEF2F2;
+      border-left-color: #EF4444;
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 9pt;
+      font-weight: 700;
+      color: #334155;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 5px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+      font-family: Consolas, monospace;
+    }
+
+    .badge-primary {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 9pt;
+      font-weight: 700;
+      color: #4338CA;
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      border-radius: 6px;
+    }
+
+    /* Screenshots */
+    .figure-container {
+      margin: 14px 0 18px 0;
+      text-align: center;
+    }
+
+    .figure-img {
+      width: 100%;
+      max-width: 580px;
+      border-radius: 8px;
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .figure-caption {
+      font-size: 9pt;
+      color: #64748B;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 12px 0;
+      font-size: 9pt;
+    }
+
+    th, td {
+      border: 1px solid #E2E8F0;
+      padding: 6px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #F8FAFC;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background: #FBFCFE;
+    }
+
+    /* Steps list */
+    .step-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 9px 13px;
+      margin-bottom: 8px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      color: #4F46E5;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER PAGE -->
+  <div class="cover-page">
+    <div>
+      <div class="cover-badge">Windows 생산성 유틸리티</div>
+      <br>
+      <img src="images/app_icon.png" class="cover-icon" alt="KeySnap Icon">
+      <div class="cover-title">KeySnap</div>
+      <div class="cover-subtitle">스마트 전역 텍스트 대치 유틸리티</div>
+      <p class="cover-desc">
+        반복되는 긴 문장, 인사말, 이메일 주소, 코드 스니펫을 단축키 하나로 즉시 완성하세요.<br>
+        macOS의 텍스트 대치를 Windows 환경에서 완벽하게 구현한 고성능·초경량 도구입니다.
+      </p>
+    </div>
+
+    <div class="cover-meta">
+      <div>
+        <strong>공식 버전:</strong> v1.0.0<br>
+        <strong>지원 운영체제:</strong> Windows 10 / 11 (64-bit)
+      </div>
+      <div>
+        <strong>개발사:</strong> 유디연구소 (UD Factory)<br>
+        <strong>공식 블로그:</strong> https://blog.naver.com/factoryud<br>
+        <strong>GitHub:</strong> https://github.com/UD-FACTORY/KeySnap
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="no-break">
+    <h1>목차 (Table of Contents)</h1>
+    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px 24px; margin-top: 14px;">
+      <ul style="list-style-type: none; margin-left: 0; line-height: 2;">
+        <li><strong>1. 프로그램 개요 및 특징</strong> ··························································· 3</li>
+        <li><strong>2. 설치 및 시작하기</strong> ······································································ 4</li>
+        <li><strong>3. 텍스트 대치 및 단축어 관리</strong> ························································· 5</li>
+        <li><strong>4. 치환 실행 단축키 (트리거 키) 설정</strong> ·············································· 6</li>
+        <li><strong>5. 예외 프로그램 관리 (블랙리스트)</strong> ·················································· 7</li>
+        <li><strong>6. 동적 매크로 태그 활용</strong> ·································································· 8</li>
+        <li><strong>7. 데이터 백업 및 복원 (가져오기/내보내기)</strong> ····································· 8</li>
+        <li><strong>8. 문제 해결 및 FAQ</strong> ········································································· 9</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 1 -->
+  <h1>1. 프로그램 개요 및 특징</h1>
+  <p>
+    <strong>KeySnap</strong>은 Windows 환경에서 타이핑의 피로를 획기적으로 줄여주는 <strong>전역 텍스트 대치(Text Replacement) 전문 유틸리티</strong>입니다.
+    카카오톡, 슬랙, 노션, 웹 브라우저(크롬/엣지), 워드, 메모장 등 사용자가 작업 중인 모든 응용 프로그램에서 지정한 단축어를 입력한 후 단축키를 누르면 즉각 대치어로 자동 변환됩니다.
+  </p>
+
+  <h2>주요 핵심 특징</h2>
+  <div class="step-box">
+    <div class="step-title">⚡ 모든 Windows 응용 프로그램과의 100% 호환성</div>
+    <p>저수준 키보드 훅(Low-Level Keyboard Hook) 엔진을 탑재하여 어떤 창이 활성화되어 있든 시스템 전역에서 정확하게 키 입력을 감지합니다.</p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-title">🇰🇷 강력한 한글 두벌식 초성/자모 분해 엔진</div>
+    <p>영문 타자 모드나 한글 조합 상태를 신경 쓸 필요 없이, 자판 그대로 <span class="badge-primary">ㅇㅈ</span>을 치면 <span class="badge-primary">인정합니다. 👍</span>로 완벽하게 자동 변환됩니다.</p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-title">⌨️ 사용자 맞춤형 임의 단축키 (트리거 키) 녹화</div>
+    <p>단축어 입력 후 치환을 실행할 단축키를 <span class="kbd">Tab</span>, <span class="kbd">Space</span>, <span class="kbd">Ctrl+Space</span>, <span class="kbd">Alt+Q</span> 등 원하는 키보드 조합으로 직접 눌러 자유롭게 지정할 수 있습니다.</p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-title">🛡️ 안전한 클립보드 복원 파이프라인</div>
+    <p>텍스트를 주입할 때 사용자가 직전에 복사해 둔 클립보드 내용을 손상시키지 않도록 임시 백업 후 수십 밀리초 내로 원상 복원합니다.</p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-title">🏷️ 실시간 동적 매크로 태그</div>
+    <p>대치어에 오늘 날짜(<span class="kbd">{{today}}</span>), 현재 시각(<span class="kbd">{{time}}</span>), 클립보드 내용(<span class="kbd">{{clipboard}}</span>)을 삽입하여 스마트하게 작성할 수 있습니다.</p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 2 -->
+  <h1>2. 설치 및 시작하기</h1>
+  
+  <h2>배포 파일 종류</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">파일 형태</th>
+        <th style="width: 15%;">파일 크기</th>
+        <th>특징 및 추천 대상</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>KeySnap-Setup-v1.0.0.exe</strong></td>
+        <td>~66 MB</td>
+        <td><strong>표준 설치 프로그램 (권장 ⭐)</strong><br>.NET 런타임 없이 모든 Windows PC에서 원클릭으로 설치 및 실행 가능</td>
+      </tr>
+      <tr>
+        <td><strong>KeySnap-Setup-v1.0.0-Lite.exe</strong></td>
+        <td>~3 MB</td>
+        <td><strong>초경량 설치 프로그램</strong><br>.NET 8 런타임이 설치되어 있는 PC를 위한 초고속 다운로드 파일</td>
+      </tr>
+      <tr>
+        <td><strong>KeySnap.exe</strong></td>
+        <td>~1.1 MB</td>
+        <td><strong>무설치 포터블 버전</strong><br>설치 없이 USB나 임의 폴더에서 바로 실행 가능</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>시스템 트레이 상주 및 자동 실행</h2>
+  <ul>
+    <li><strong>백그라운드 구동:</strong> 프로그램 우측 상단의 닫기(X) 버튼을 누르면 작업 표시줄 우측 하단의 <strong>시스템 트레이(알림 영역)</strong>로 조용히 숨겨집니다.</li>
+    <li><strong>설정 창 다시 열기:</strong> 트레이의 보라색 키보드 문서 아이콘을 <strong>더블클릭</strong>하면 즉시 창이 열립니다.</li>
+    <li><strong>원클릭 On/Off 토글:</strong> 트레이 아이콘을 <strong>우클릭</strong>하여 <em>[텍스트 대치 사용]</em> 체크박스를 원클릭으로 켜고 끌 수 있습니다.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 3 -->
+  <h1>3. 텍스트 대치 및 단축어 관리</h1>
+  
+  <h2>단축어 작동 원리</h2>
+  <ol>
+    <li>원하는 문서 작성기, 메신저, 웹 폼 등에서 등록된 <strong>단축어</strong>(예: <span class="badge-primary">ㄱㅅ</span> 또는 <span class="badge-primary">!email</span>)를 타이핑합니다.</li>
+    <li>설정된 <strong>치환 실행 단축키</strong>(기본값: <span class="kbd">Tab</span>)를 누릅니다.</li>
+    <li>직전에 입력된 단축어가 지워지며, 미리 설정된 긴 대치어로 눈 깜짝할 사이에 치환됩니다!</li>
+  </ol>
+
+  <div class="callout tip">
+    <strong>💡 한글 초성/자모 단축어 팁:</strong><br>
+    한/영 전환 키를 누를 필요 없이 자판 그대로 <span class="badge-primary">ㅇㅈ</span>, <span class="badge-primary">ㄱㅅ</span>, <span class="badge-primary">ㅈㄱ</span> 등을 입력하면 영문 타자 버퍼(<span class="kbd">dw</span>, <span class="kbd">rt</span>, <span class="kbd">wr</span>)를 지능적으로 분석하여 한글 단축어로 자동 매칭합니다.
+  </div>
+
+  <h2>단축어 추가 및 관리 방법</h2>
+  <div class="step-box">
+    <div class="step-title">1) 새 단축어 추가</div>
+    <p>메인 창 좌측의 <strong>[단축어 관리]</strong> 탭에서 우측 상단의 <strong>[+ 새 단축어 추가]</strong> 버튼을 클릭합니다. 대화상자에 사용할 단축어와 변경될 대치어를 입력하고 저장합니다.</p>
+  </div>
+  <div class="step-box">
+    <div class="step-title">2) 수정 및 삭제</div>
+    <p>목록에서 수정하려는 항목을 더블클릭하거나 마우스 우클릭하여 수정할 수 있으며, 불필요한 단축어는 [삭제] 버튼으로 언제든 제거할 수 있습니다.</p>
+  </div>
+  <div class="step-box">
+    <div class="step-title">3) 개별 사용/중지 스위치</div>
+    <p>자주 쓰지 않는 단축어는 삭제할 필요 없이 목록 좌측의 <strong>상태 토글 스위치</strong>를 클릭하여 즉시 비활성화할 수 있습니다.</p>
+  </div>
+
+  <h2>기본 추천 단축어 예시</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>단축어</th>
+        <th>대치어</th>
+        <th>분류</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge-primary">ㅇㅈ</span></td>
+        <td>인정합니다. 👍</td>
+        <td>일상</td>
+      </tr>
+      <tr>
+        <td><span class="badge-primary">ㄱㅅ</span></td>
+        <td>감사합니다! 좋은 하루 보내세요. 😊</td>
+        <td>인사</td>
+      </tr>
+      <tr>
+        <td><span class="badge-primary">ㅈㄱ</span></td>
+        <td>지금 통화 가능하신가요?</td>
+        <td>업무</td>
+      </tr>
+      <tr>
+        <td><span class="badge-primary">!email</span></td>
+        <td>user@example.com</td>
+        <td>개인정보</td>
+      </tr>
+      <tr>
+        <td><span class="badge-primary">!today</span></td>
+        <td>{{today}} (현재 날짜 자동 치환)</td>
+        <td>매크로</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 4 -->
+  <h1>4. 치환 실행 단축키 (트리거 키) 설정</h1>
+  <p>
+    KeySnap은 사용자의 타이핑 습관에 맞추어 <strong>원하는 임의의 키보드 단축키를 직접 누르면 즉시 감지되어 적용되는 대화형 키 녹화 기능</strong>을 제공합니다.
+  </p>
+
+  <div class="figure-container no-break">
+    <img src="images/screenshot_settings.png" class="figure-img" alt="KeySnap 환경설정 화면">
+    <div class="figure-caption">▲ [그림 1] KeySnap 환경설정 및 치환 실행 단축키 설정 화면</div>
+  </div>
+
+  <h2>단축키 변경 방법</h2>
+  <ol>
+    <li>좌측 사이드바에서 <strong>[환경설정]</strong> 메뉴를 클릭합니다.</li>
+    <li>'⚡ 치환 실행 단축키 및 클립보드' 섹션에서 <span class="badge-primary">⌨ 단축키 변경</span> 버튼을 누릅니다.</li>
+    <li>화면에 <span style="color:#DC2626; font-weight:bold;">🔴 원하는 키 또는 조합키를 누르세요... (취소: ESC)</span> 알림이 나타납니다.</li>
+    <li>키보드에서 원하는 키(예: <span class="kbd">Tab</span>, <span class="kbd">Space</span>, <span class="kbd">Ctrl</span>+<span class="kbd">Space</span>, <span class="kbd">Shift</span>+<span class="kbd">Space</span>, <span class="kbd">Alt</span>+<span class="kbd">Q</span>, <span class="kbd">F8</span>, <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> 등)를 누르면 즉각 감지되어 저장됩니다.</li>
+    <li>언제든 <span class="badge-primary">기본값 (Tab)</span> 버튼을 눌러 초기 상태로 손쉽게 되돌릴 수 있습니다.</li>
+  </ol>
+
+  <div class="callout tip">
+    <strong>💡 Tab 키 스마트 가로채기:</strong><br>
+    <span class="kbd">Tab</span> 키를 단축키로 사용할 경우, 치환이 일어날 때 탭 키 입력을 가로채어 입력창에서 포커스가 다음 버튼이나 필드로 튀는 현상을 원천 방지합니다.
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 5 -->
+  <h1>5. 예외 프로그램 관리 (블랙리스트)</h1>
+  <p>
+    게임 플레이 중이거나 은행/증권 보안 프로그램, 또는 단축키 간섭이 발생할 수 있는 특정 프로그램에서는 텍스트 대치가 동작하지 않도록 <strong>예외 프로그램 목록</strong>을 관리할 수 있습니다.
+  </p>
+
+  <div class="figure-container no-break">
+    <img src="images/screenshot_exclusions.png" class="figure-img" alt="KeySnap 예외 프로그램 화면">
+    <div class="figure-caption">▲ [그림 2] KeySnap 예외 프로그램 관리 화면</div>
+  </div>
+
+  <h2>예외 프로그램 등록 방법</h2>
+  <ul>
+    <li><strong>실행 중인 창에서 선택 (가장 편리):</strong><br>
+      우측 상단의 <strong>[+ 실행 중인 앱에서 추가]</strong>를 누르면 현재 컴퓨터에서 켜져 있는 창 목록이 표시되며, 원하는 프로그램을 클릭 한 번으로 간편하게 등록할 수 있습니다.
+    </li>
+    <li><strong>파일 찾아보기 (.exe):</strong><br>
+      실행 파일 경로를 직접 선택하여 등록하고 싶을 때는 <strong>[파일 찾아보기]</strong> 버튼을 사용합니다.
+    </li>
+    <li><strong>기본 프리셋 제공:</strong><br>
+      리그 오브 레전드(League of Legends), 오버워치(Overwatch), 발로란트(Valorant) 등 대표적인 게임들이 기본 예외 프로그램으로 탑재되어 있습니다.
+    </li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 6 & 7 -->
+  <h1>6. 동적 매크로 태그 활용</h1>
+  <p>
+    단축어 등록 시 아래의 매크로 코드를 본문에 포함하면, 치환이 일어나는 순간의 실시간 동적 데이터로 자동 변환됩니다.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">매크로 태그</th>
+        <th style="width: 25%;">한글 별칭</th>
+        <th>동작 설명 및 예시 결과</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="kbd">{{today}}</span></td>
+        <td><span class="kbd">!오늘날짜</span></td>
+        <td>현재 날짜를 <span class="badge-primary">YYYY-MM-DD</span> 포맷으로 자동 입력<br><em>예: 2026-09-23</em></td>
+      </tr>
+      <tr>
+        <td><span class="kbd">{{time}}</span></td>
+        <td><span class="kbd">!현재시간</span></td>
+        <td>현재 시각을 <span class="badge-primary">HH:mm:ss</span> 포맷으로 자동 입력<br><em>예: 16:30:15</em></td>
+      </tr>
+      <tr>
+        <td><span class="kbd">{{clipboard}}</span></td>
+        <td><span class="kbd">!클립보드</span></td>
+        <td>컴퓨터 클립보드에 현재 복사되어 있는 텍스트를 대치어 본문 사이에 삽입</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>실무 활용 예시</h2>
+  <div class="step-box">
+    <div class="step-title">예시 1) 고객 상담 완료 템플릿</div>
+    <p>단축어: <span class="badge-primary">!상담</span></p>
+    <p style="background: #F8FAFC; padding: 8px; border-radius: 6px; font-size: 9.5pt;">
+      [고객 응대 일지]<br>
+      일자: {{today}} ({{time}})<br>
+      접수 내용: {{clipboard}}<br>
+      처리 결과: 정상 안내 완료되었습니다. 감사합니다.
+    </p>
+  </div>
+
+  <h1 style="margin-top: 30px;">7. 데이터 백업 및 복원</h1>
+  <p>
+    새로운 PC로 컴퓨터를 교체하거나 다른 동료와 단축어 목록을 공유하고 싶을 때, 단 한 번의 클릭으로 데이터를 내보내고 가져올 수 있습니다.
+  </p>
+  <ul>
+    <li><strong>내보내기:</strong> [단축어 관리] ➔ [내보내기] 클릭 ➔ JSON 파일로 안전하게 저장</li>
+    <li><strong>가져오기:</strong> [단축어 관리] ➔ [가져오기] 클릭 ➔ 백업한 JSON 파일을 선택하여 복원</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- CHAPTER 8 -->
+  <h1>8. 문제 해결 및 FAQ</h1>
+
+  <div class="step-box no-break">
+    <div class="step-title">Q1. 설치 파일을 실행했을 때 Windows의 PC 보호(SmartScreen) 알림이 뜹니다.</div>
+    <p>
+      KeySnap은 안전한 오픈소스 소프트웨어입니다. 신규 배포 프로그램의 경우 마이크로소프트의 누적 다운로드 평판이 쌓이기 전까지 SmartScreen 경고 창이 나타날 수 있습니다.<br>
+      화면 중앙의 <strong>[추가 정보]</strong> 링크를 클릭한 후, 활성화되는 <strong>[실행]</strong> 버튼을 누르시면 정상적으로 설치가 진행됩니다.
+    </p>
+  </div>
+
+  <div class="step-box no-break">
+    <div class="step-title">Q2. 단축어를 입력했는데 대치가 일어나지 않습니다.</div>
+    <ol style="margin-left: 18px; margin-top: 6px;">
+      <li>좌측 사이드바 하단의 <strong>[전역 텍스트 대치]</strong> 마스터 스위치가 켜져 있는지 확인합니다.</li>
+      <li>[환경설정]에서 설정된 <strong>치환 실행 단축키</strong>(예: Tab 또는 Space)를 정확히 눌렀는지 확인합니다.</li>
+      <li>현재 사용 중인 프로그램이 [예외 프로그램 관리] 목록에 등록되어 있는지 확인합니다.</li>
+    </ol>
+  </div>
+
+  <div class="step-box no-break">
+    <div class="step-title">Q3. 대치 후 이전 클립보드 복사 내용이 사라지지 않나요?</div>
+    <p>
+      KeySnap은 치환 직전 사용자의 클립보드 내용을 임시 백업한 후, 대치어를 입력하고 기본 80ms(밀리초) 이내에 원래 클립보드로 완벽히 복원합니다. 복원 속도는 [환경설정] 탭의 '클립보드 복원 대기 지연 시간'에서 자유롭게 조절할 수 있습니다.
+    </p>
+  </div>
+
+  <div class="callout tip" style="margin-top: 30px;">
+    <strong>👨‍💻 제작자 정보 및 공식 지원:</strong><br>
+    • 제작: <strong>유디연구소 (UD Factory)</strong><br>
+    • 공식 블로그: <a href="https://blog.naver.com/factoryud" style="color: #4F46E5; text-decoration: none; font-weight: bold;">https://blog.naver.com/factoryud</a><br>
+    • GitHub 공식 저장소: <a href="https://github.com/UD-FACTORY/KeySnap" style="color: #4F46E5; text-decoration: none; font-weight: bold;">https://github.com/UD-FACTORY/KeySnap</a><br>
+    • 버그 제보나 추가 기능 요청은 블로그 또는 GitHub Issues를 통해 남겨주시면 빠르게 반영해 드립니다.
+  </div>
+
+</body>
+</html>
