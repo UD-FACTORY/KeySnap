@@ -9,6 +9,15 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>app_icon.ico</ApplicationIcon>
     <AssemblyName>KeySnap</AssemblyName>
+    <AssemblyTitle>KeySnap</AssemblyTitle>
+    <Product>KeySnap</Product>
+    <Description>Windows용 스마트 전역 텍스트 대치 유틸리티</Description>
+    <Company>유디연구소 (UD Factory)</Company>
+    <Authors>UD Factory</Authors>
+    <Copyright>Copyright © 2026 UD Factory. All rights reserved.</Copyright>
+    <Version>1.0.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
