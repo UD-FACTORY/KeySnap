@@ -39,7 +39,7 @@ Name: "runatstartup"; Description: "Windows 시작 시 자동 실행 (Start with
 
 [Files]
 Source: "..\dist\KeySnap.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

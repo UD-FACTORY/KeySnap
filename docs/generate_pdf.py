@@ -21,7 +21,7 @@ thread.start()
 print("Server started on port", PORT)
 time.sleep(1)
 
-out_pdf = r"d:\Code\QuickReplace\docs\KeySnap_Manual.pdf"
+out_pdf = r"d:\Code\QuickReplace\docs\KeySnap_사용설명서.pdf"
 if os.path.exists(out_pdf):
     os.remove(out_pdf)
 
