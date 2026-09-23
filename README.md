@@ -20,7 +20,7 @@
 
 ## 📥 다운로드 (Releases)
 
-GitHub **[Releases](https://github.com/)** 탭에서 최신 버전을 다운로드하실 수 있습니다:
+GitHub **[Releases (다운로드 바로가기)](https://github.com/UD-FACTORY/KeySnap/releases)** 탭에서 최신 버전을 다운로드하실 수 있습니다:
 
 | 파일명 | 종류 | 설명 | 크기 |
 | :--- | :--- | :--- | :--- |
@@ -67,7 +67,7 @@ GitHub **[Releases](https://github.com/)** 탭에서 최신 버전을 다운로�
 ### 소스코드 빌드
 ```powershell
 # 저장소 복제
-git clone https://github.com/<your-username>/KeySnap.git
+git clone https://github.com/UD-FACTORY/KeySnap.git
 cd KeySnap
 
 # 빌드 및 실행
