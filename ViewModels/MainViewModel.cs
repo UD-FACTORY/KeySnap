@@ -184,6 +184,17 @@ namespace QuickReplace.ViewModels
         public int TotalExclusionCount => Exclusions.Count;
         public int EnabledExclusionCount => Exclusions.Count(e => e.IsEnabled);
 
+        public string AppVersionDisplay
+        {
+            get
+            {
+                var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return ver != null ? $"v{ver.Major}.{ver.Minor}.{ver.Build}" : "v1.1.0";
+            }
+        }
+
+        public string WindowTitle => $"KeySnap {AppVersionDisplay} - 스마트 텍스트 대치";
+
         public ICommand OpenBlogCommand { get; }
 
         // Commands

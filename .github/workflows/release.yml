@@ -22,19 +22,23 @@ jobs:
 
       - name: Publish Single-File Executable
         run: |
-          dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish/
+          dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o dist/
 
-      - name: Package Portable Zip
+      - name: Build Installer (Inno Setup)
         shell: pwsh
         run: |
-          Compress-Archive -Path publish/KeySnap.exe, app_icon.ico, README.md -DestinationPath publish/KeySnap-${{ github.ref_name }}-win-x64.zip
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (!(Test-Path $iscc)) {
+            choco install innosetup -y
+            $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          }
+          & $iscc installer/KeySnap_Setup_Lite.iss
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            publish/KeySnap.exe
-            publish/KeySnap-${{ github.ref_name }}-win-x64.zip
+            dist/installer/KeySnap-Setup-*.exe
           name: KeySnap ${{ github.ref_name }}
           draft: false
           prerelease: false

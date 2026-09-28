@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:helpers="clr-namespace:QuickReplace.Helpers"
         mc:Ignorable="d"
-        Title="KeySnap - 텍스트 대치 유틸리티" 
+        Title="{Binding WindowTitle}" 
         Height="840" Width="1080"
         MinHeight="620" MinWidth="900"
         WindowStartupLocation="CenterScreen"
@@ -278,7 +278,12 @@
                             <Image Source="pack://application:,,,/app_icon.png" Stretch="UniformToFill"/>
                         </Border>
                         <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="KeySnap" FontWeight="Bold" FontSize="16" Foreground="#F8FAFC"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="KeySnap" FontWeight="Bold" FontSize="16" Foreground="#F8FAFC"/>
+                                <Border Background="#312E81" CornerRadius="4" Padding="5,1" Margin="6,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding AppVersionDisplay}" FontSize="10" FontWeight="Bold" Foreground="#A5B4FC"/>
+                                </Border>
+                            </StackPanel>
                             <TextBlock Text="텍스트 대치 유틸리티" FontSize="11" Foreground="#64748B"/>
                         </StackPanel>
                     </StackPanel>

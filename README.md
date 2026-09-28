@@ -24,8 +24,7 @@ GitHub **[Releases (다운로드 바로가기)](https://github.com/UD-FACTORY/Ke
 
 | 파일명 | 종류 | 설명 | 링크 |
 | :--- | :--- | :--- | :---: |
-| **`KeySnap-v1.1.0-win-x64.zip`** | **포터블 패키지 (권장)** | 압축 해제 후 즉시 사용 가능한 단일 실행 파일 & 아이콘 패키지 | [다운로드](https://github.com/UD-FACTORY/KeySnap/releases/download/v1.1.0/KeySnap-v1.1.0-win-x64.zip) |
-| **`KeySnap.exe`** | **단일 무설치 실행 바이너리** | 별도 설치 없이 원하는 위치에서 바로 실행 가능 | [다운로드](https://github.com/UD-FACTORY/KeySnap/releases/download/v1.1.0/KeySnap.exe) |
+| **`KeySnap-Setup-v1.1.0.exe`** | **표준 설치 프로그램 (권장)** | 바탕화면/시작메뉴 바로가기 및 부팅 시 자동 실행 지원 설치 파일 | [다운로드](https://github.com/UD-FACTORY/KeySnap/releases/download/v1.1.0/KeySnap-Setup-v1.1.0.exe) |
 | **`KeySnap_사용설명서.pdf`** | **공식 사용자 매뉴얼** | 고해상도 스크린샷과 상세 활용법이 담긴 PDF 안내서 | [다운로드](docs/KeySnap_사용설명서.pdf) |
 
 > [!NOTE]

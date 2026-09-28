@@ -8,7 +8,7 @@
 AppId={{5E47BF31-893C-4DA8-8547-A2692BF55829}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-AppVerName={#MyAppName} v{#MyAppVersion} (Lite)
+AppVerName={#MyAppName} v{#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -17,7 +17,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=..\dist\installer
-OutputBaseFilename=KeySnap-Setup-v{#MyAppVersion}-Lite
+OutputBaseFilename=KeySnap-Setup-v{#MyAppVersion}
 SetupIconFile=..\app_icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/ultra64
