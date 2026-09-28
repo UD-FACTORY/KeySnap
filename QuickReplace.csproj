@@ -15,9 +15,9 @@
     <Company>유디연구소 (UD Factory)</Company>
     <Authors>UD Factory</Authors>
     <Copyright>Copyright © 2026 UD Factory. All rights reserved.</Copyright>
-    <Version>1.0.0.0</Version>
-    <FileVersion>1.0.0.0</FileVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Version>1.1.0.0</Version>
+    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

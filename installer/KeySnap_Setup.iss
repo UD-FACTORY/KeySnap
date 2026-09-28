@@ -1,5 +1,5 @@
 #define MyAppName "KeySnap"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "유디연구소"
 #define MyAppURL "https://blog.naver.com/factoryud"
 #define MyAppExeName "KeySnap.exe"
