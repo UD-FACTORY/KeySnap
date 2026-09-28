@@ -109,10 +109,10 @@ namespace QuickReplace.Services
                 {
                     if (IsTriggerHotkey(vkCode, out bool isWhitespaceKey))
                     {
-                        if (TryTriggerMatch(out var matchedShortcut, out int typedCharCount))
+                        if (TryTriggerMatch(out var matchedShortcut, out _))
                         {
                             // 트리거 키를 가로채어 앱에 전달하지 않고 치환 실행
-                            TriggerReplacement(matchedShortcut, typedCharCount, extraBackspace: 0, delayMs: 0);
+                            TriggerReplacement(matchedShortcut, extraBackspace: 0, delayMs: 0);
                             return (IntPtr)1; // 트리거 키 입력 차단
                         }
                     }
@@ -154,11 +154,11 @@ namespace QuickReplace.Services
                     // 5. 즉시 변환 모드: 문자가 입력된 즉시 단축어 일치 여부 검사
                     if (_settings.ReplacementMode == ReplacementMode.Instant)
                     {
-                        if (TryTriggerMatch(out var matchedShortcut, out int typedCharCount))
+                        if (TryTriggerMatch(out var matchedShortcut, out _))
                         {
                             ClearBuffer();
                             // 현재 입력된 마지막 문자가 대상 프로그램에 먼저 반영되도록 30ms 지연 후 치환
-                            TriggerReplacement(matchedShortcut, typedCharCount, extraBackspace: 0, delayMs: 30);
+                            TriggerReplacement(matchedShortcut, extraBackspace: 0, delayMs: 30);
                             return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
                         }
                     }
@@ -241,9 +241,9 @@ namespace QuickReplace.Services
             return false;
         }
 
-        private void TriggerReplacement(ShortcutItem item, int typedCharCount, int extraBackspace = 0, int delayMs = 0)
+        private void TriggerReplacement(ShortcutItem item, int extraBackspace = 0, int delayMs = 0)
         {
-            int backspaceCount = typedCharCount + extraBackspace;
+            int backspaceCount = KoreanHelper.CalculateBackspaceCount(item.Shortcut) + extraBackspace;
 
             ClearBuffer();
 

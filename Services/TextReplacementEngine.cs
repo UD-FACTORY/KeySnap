@@ -54,11 +54,11 @@ namespace QuickReplace.Services
         {
             if (count <= 0) return;
 
-            var inputs = new NativeMethods.INPUT[count * 2];
             for (int i = 0; i < count; i++)
             {
+                var inputs = new NativeMethods.INPUT[2];
                 // Key Down
-                inputs[i * 2] = new NativeMethods.INPUT
+                inputs[0] = new NativeMethods.INPUT
                 {
                     type = NativeMethods.INPUT_KEYBOARD,
                     U = new NativeMethods.InputUnion
@@ -75,7 +75,7 @@ namespace QuickReplace.Services
                 };
 
                 // Key Up
-                inputs[i * 2 + 1] = new NativeMethods.INPUT
+                inputs[1] = new NativeMethods.INPUT
                 {
                     type = NativeMethods.INPUT_KEYBOARD,
                     U = new NativeMethods.InputUnion
@@ -90,9 +90,15 @@ namespace QuickReplace.Services
                         }
                     }
                 };
-            }
 
-            NativeMethods.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+                NativeMethods.SendInput(2, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+
+                // 한글 IME 조합 상태 해제 및 에디터 렌더링 동기화를 위한 미세 지연 (5ms)
+                if (count > 1 && i < count - 1)
+                {
+                    Thread.Sleep(5);
+                }
+            }
         }
 
         private static void SendPaste()

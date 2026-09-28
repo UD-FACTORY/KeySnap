@@ -113,5 +113,59 @@ namespace QuickReplace.Helpers
         {
             return EnglishToJamo.TryGetValue(engChar, out char jamo) ? jamo : engChar;
         }
+
+        /// <summary>
+        /// 단축어 입력을 화면에서 깨끗하게 지우기 위해 필요한 정확한 백스페이스 횟수를 계산합니다.
+        /// Windows 한글 입력기(IME)에서는 실시간 조합(Composition) 중인 마지막 음절을 지울 때 자모 단위로 지워지며,
+        /// 이미 확정된 앞선 음절들은 글자(음절) 단위로 1회씩 지워집니다.
+        /// </summary>
+        public static int CalculateBackspaceCount(string shortcut)
+        {
+            if (string.IsNullOrEmpty(shortcut)) return 0;
+
+            // 1. 앞선 글자들은 이미 완성/확정(Commit)되어 있으므로 글자당 1회씩 지워짐
+            int total = shortcut.Length - 1;
+
+            // 2. 마지막 글자는 현재 IME 조합(Composition) 상태에 머물러 있으므로 자모 타수만큼 백스페이스가 소모됨
+            char lastChar = shortcut[^1];
+
+            if (lastChar >= 0xAC00 && lastChar <= 0xD7A3)
+            {
+                int unicode = lastChar - 0xAC00;
+                int jung = (unicode % (21 * 28)) / 28;
+                int jong = unicode % 28;
+
+                int lastSyllableKeys = 1; // 초성 (항상 1타)
+
+                char jungChar = JungSung[jung];
+                if (JamoToEnglish.TryGetValue(jungChar, out var jungEng))
+                {
+                    lastSyllableKeys += jungEng.Length; // 단모음 1타, 이중모음 2타
+                }
+
+                if (jong > 0)
+                {
+                    char jongChar = JongSung[jong];
+                    if (JamoToEnglish.TryGetValue(jongChar, out var jongEng))
+                    {
+                        lastSyllableKeys += jongEng.Length; // 홑받침 1타, 겹받침 2타
+                    }
+                }
+
+                total += lastSyllableKeys;
+            }
+            else if (JamoToEnglish.TryGetValue(lastChar, out var eng))
+            {
+                // 단독 자모인 경우 (예: 'ㄳ' -> 2타, 'ㅇ' -> 1타)
+                total += eng.Length;
+            }
+            else
+            {
+                // 일반 문자 (영문, 숫자, 기호 등)는 1회
+                total += 1;
+            }
+
+            return total;
+        }
     }
 }
