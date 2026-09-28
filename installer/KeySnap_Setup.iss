@@ -38,7 +38,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "runatstartup"; Description: "Windows 시작 시 자동 실행 (Start with Windows)"; GroupDescription: "기타 설정 (Other Settings):"; Flags: unchecked
 
 [Files]
-Source: "..\publish_selfcontained\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\KeySnap.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

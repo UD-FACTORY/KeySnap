@@ -32,7 +32,7 @@ jobs:
             choco install innosetup -y
             $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           }
-          & $iscc installer/KeySnap_Setup_Lite.iss
+          & $iscc installer/KeySnap_Setup.iss
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
