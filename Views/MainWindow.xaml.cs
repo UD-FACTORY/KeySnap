@@ -66,14 +66,38 @@ namespace QuickReplace.Views
             Close();
         }
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private const int SW_RESTORE = 9;
+
         public void BringToFront()
         {
+            if (!IsVisible)
+            {
+                Show();
+            }
+
             if (WindowState == WindowState.Minimized)
             {
                 WindowState = WindowState.Normal;
             }
-            Show();
+
+            var helper = new System.Windows.Interop.WindowInteropHelper(this);
+            IntPtr hWnd = helper.Handle;
+            if (hWnd != IntPtr.Zero)
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+                SetForegroundWindow(hWnd);
+            }
+
             Activate();
+            Topmost = true;
+            Topmost = false;
+            Focus();
         }
 
         private bool ShowShortcutEditDialog(ShortcutItem? item)
