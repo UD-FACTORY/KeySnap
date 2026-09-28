@@ -51,3 +51,47 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{userappdata}\KeySnap"
+Type: filesandordirs; Name: "{userappdata}\QuickReplace"
+Type: filesandordirs; Name: "{localappdata}\KeySnap"
+Type: filesandordirs; Name: "{app}"
+
+[Code]
+function InitializeUninstall(): Boolean;
+var
+  ErrorCode: Integer;
+begin
+  Result := True;
+  // 프로그램 제거 전 실행 중인 KeySnap 프로세스 강제 종료
+  ShellExec('open', 'taskkill.exe', '/F /IM KeySnap.exe', '', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  AppDataDir: string;
+  OldAppDataDir: string;
+  LocalAppDataDir: string;
+begin
+  if CurUninstallStep = usPostUninstall then
+  begin
+    AppDataDir := ExpandConstant('{userappdata}\KeySnap');
+    if DirExists(AppDataDir) then
+    begin
+      DelTree(AppDataDir, True, True, True);
+    end;
+
+    OldAppDataDir := ExpandConstant('{userappdata}\QuickReplace');
+    if DirExists(OldAppDataDir) then
+    begin
+      DelTree(OldAppDataDir, True, True, True);
+    end;
+
+    LocalAppDataDir := ExpandConstant('{localappdata}\KeySnap');
+    if DirExists(LocalAppDataDir) then
+    begin
+      DelTree(LocalAppDataDir, True, True, True);
+    end;
+  end;
+end;
