@@ -15,8 +15,8 @@ namespace QuickReplace.Services
         private readonly TextReplacementEngine _replacementEngine;
         private readonly ForegroundAppWatcher _appWatcher;
         private readonly AppSettings _settings;
-        private readonly List<ShortcutItem> _shortcuts;
-        private readonly List<ExclusionApp> _exclusions;
+        private readonly IList<ShortcutItem> _shortcuts;
+        private readonly IList<ExclusionApp> _exclusions;
 
         private IntPtr _hookId = IntPtr.Zero;
         private NativeMethods.LowLevelKeyboardProc? _proc;
@@ -31,8 +31,8 @@ namespace QuickReplace.Services
             TextReplacementEngine replacementEngine,
             ForegroundAppWatcher appWatcher,
             AppSettings settings,
-            List<ShortcutItem> shortcuts,
-            List<ExclusionApp> exclusions)
+            IList<ShortcutItem> shortcuts,
+            IList<ExclusionApp> exclusions)
         {
             _replacementEngine = replacementEngine;
             _appWatcher = appWatcher;
@@ -89,7 +89,7 @@ namespace QuickReplace.Services
                 }
 
                 // 전역 비활성화 상태이거나 예외 프로그램인 경우 무조건 통과
-                if (!_settings.IsGlobalEnabled || _appWatcher.IsExcluded(_exclusions))
+                if (!_settings.IsGlobalEnabled || _appWatcher.IsExcluded(_exclusions.ToList()))
                 {
                     ClearBuffer();
                     return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
@@ -98,14 +98,23 @@ namespace QuickReplace.Services
                 ushort vkCode = (ushort)kbd.vkCode;
                 ushort scanCode = (ushort)kbd.scanCode;
 
-                // 1. 단축키(트리거 키) 입력 검사
-                if (IsTriggerHotkey(vkCode, out bool shouldSuppressKey))
+                // IME 입력 중인 경우 실제 가상 키 코드로 복원 (0xE5 = VK_PROCESSKEY)
+                if (vkCode == NativeMethods.VK_PROCESSKEY)
                 {
-                    if (TryTriggerMatch(out var matchedShortcut))
+                    vkCode = (ushort)NativeMethods.MapVirtualKey(scanCode, 1);
+                }
+
+                // 1. 단축키 변환 모드: 트리거 키가 입력되었는지 검사
+                if (_settings.ReplacementMode == ReplacementMode.Hotkey)
+                {
+                    if (IsTriggerHotkey(vkCode, out bool isWhitespaceKey))
                     {
-                        // 트리거 키를 가로채어 앱에 전달하지 않고 치환 실행!
-                        TriggerReplacement(matchedShortcut, extraBackspace: 0);
-                        return (IntPtr)1; // 키 이벤트 차단 (Tab 등의 포커스 이동 방지)
+                        if (TryTriggerMatch(out var matchedShortcut, out int typedCharCount))
+                        {
+                            // 트리거 키를 가로채어 앱에 전달하지 않고 치환 실행
+                            TriggerReplacement(matchedShortcut, typedCharCount, extraBackspace: 0, delayMs: 0);
+                            return (IntPtr)1; // 트리거 키 입력 차단
+                        }
                     }
                 }
 
@@ -122,9 +131,8 @@ namespace QuickReplace.Services
                     return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
                 }
 
-                // 3. ESC나 방향키, 마우스 클릭 등 시 버퍼 리셋
-                if (vkCode == 0x1B || // ESC
-                    (vkCode >= 0x25 && vkCode <= 0x28)) // Arrow Keys
+                // 3. ESC나 방향키 입력 시 버퍼 리셋
+                if (vkCode == 0x1B || (vkCode >= 0x25 && vkCode <= 0x28))
                 {
                     ClearBuffer();
                     return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
@@ -137,9 +145,21 @@ namespace QuickReplace.Services
                     lock (_bufferLock)
                     {
                         _keyBuffer.Append(typedChar);
-                        if (_keyBuffer.Length > 60)
+                        if (_keyBuffer.Length > 80)
                         {
-                            _keyBuffer.Remove(0, _keyBuffer.Length - 60);
+                            _keyBuffer.Remove(0, _keyBuffer.Length - 80);
+                        }
+                    }
+
+                    // 5. 즉시 변환 모드: 문자가 입력된 즉시 단축어 일치 여부 검사
+                    if (_settings.ReplacementMode == ReplacementMode.Instant)
+                    {
+                        if (TryTriggerMatch(out var matchedShortcut, out int typedCharCount))
+                        {
+                            ClearBuffer();
+                            // 현재 입력된 마지막 문자가 대상 프로그램에 먼저 반영되도록 30ms 지연 후 치환
+                            TriggerReplacement(matchedShortcut, typedCharCount, extraBackspace: 0, delayMs: 30);
+                            return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
                         }
                     }
                 }
@@ -165,10 +185,10 @@ namespace QuickReplace.Services
         private bool IsTriggerHotkey(ushort vkCode, out bool isWhitespaceKey)
         {
             isWhitespaceKey = false;
-            bool ctrl = (NativeMethods.GetKeyState(NativeMethods.VK_CONTROL) & 0x8000) != 0;
-            bool alt = (NativeMethods.GetKeyState(NativeMethods.VK_MENU) & 0x8000) != 0;
-            bool shift = (NativeMethods.GetKeyState(NativeMethods.VK_SHIFT) & 0x8000) != 0;
-            bool win = ((NativeMethods.GetKeyState(0x5B) & 0x8000) != 0) || ((NativeMethods.GetKeyState(0x5C) & 0x8000) != 0);
+            bool ctrl = (NativeMethods.GetAsyncKeyState(NativeMethods.VK_CONTROL) & 0x8000) != 0;
+            bool alt = (NativeMethods.GetAsyncKeyState(NativeMethods.VK_MENU) & 0x8000) != 0;
+            bool shift = (NativeMethods.GetAsyncKeyState(NativeMethods.VK_SHIFT) & 0x8000) != 0;
+            bool win = ((NativeMethods.GetAsyncKeyState(0x5B) & 0x8000) != 0) || ((NativeMethods.GetAsyncKeyState(0x5C) & 0x8000) != 0);
 
             var hotkeyDef = GetActiveTriggerDef();
             if (HotkeyHelper.Matches(vkCode, ctrl, alt, shift, win, hotkeyDef))
@@ -180,24 +200,40 @@ namespace QuickReplace.Services
             return false;
         }
 
-        private bool TryTriggerMatch(out ShortcutItem matched)
+        private bool TryTriggerMatch(out ShortcutItem matched, out int typedCharCount)
         {
             matched = null!;
+            typedCharCount = 0;
             lock (_bufferLock)
             {
                 string currentBuffer = _keyBuffer.ToString();
                 if (string.IsNullOrEmpty(currentBuffer)) return false;
 
-                var enabledShortcuts = _shortcuts.Where(s => s.IsEnabled && !string.IsNullOrEmpty(s.Shortcut)).ToList();
+                // 일치 판정 시 더 긴 단축어에 우선순위 부여
+                var enabledShortcuts = _shortcuts
+                    .Where(s => s.IsEnabled && !string.IsNullOrEmpty(s.Shortcut))
+                    .OrderByDescending(s => s.Shortcut.Length)
+                    .ToList();
 
                 foreach (var item in enabledShortcuts)
                 {
                     string target = item.Shortcut;
                     string decomposedTarget = KoreanHelper.DecomposeToKeyStrokes(target);
 
-                    if (MatchBuffer(currentBuffer, target, decomposedTarget))
+                    // 1. 직접 일치 (예: !email, btw 등)
+                    if (currentBuffer.EndsWith(target, StringComparison.OrdinalIgnoreCase))
                     {
                         matched = item;
+                        typedCharCount = target.Length;
+                        return true;
+                    }
+
+                    // 2. 한글 두벌식 키스트로크 일치 (예: ㅇㅈ -> dw, 인정 -> dlswjd 등)
+                    if (!string.IsNullOrEmpty(decomposedTarget) &&
+                        currentBuffer.EndsWith(decomposedTarget, StringComparison.OrdinalIgnoreCase))
+                    {
+                        matched = item;
+                        typedCharCount = target.Length;
                         return true;
                     }
                 }
@@ -205,29 +241,19 @@ namespace QuickReplace.Services
             return false;
         }
 
-        private static bool MatchBuffer(string buffer, string target, string decomposedTarget)
+        private void TriggerReplacement(ShortcutItem item, int typedCharCount, int extraBackspace = 0, int delayMs = 0)
         {
-            if (string.IsNullOrEmpty(buffer)) return false;
+            int backspaceCount = typedCharCount + extraBackspace;
 
-            if (buffer.EndsWith(target, StringComparison.OrdinalIgnoreCase)) return true;
-
-            if (!string.IsNullOrEmpty(decomposedTarget) &&
-                buffer.EndsWith(decomposedTarget, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private void TriggerReplacement(ShortcutItem item, int extraBackspace)
-        {
-            int backspaceCount = item.Shortcut.Length + extraBackspace;
-
-            _keyBuffer.Clear();
+            ClearBuffer();
 
             _ = Task.Run(async () =>
             {
+                if (delayMs > 0)
+                {
+                    await Task.Delay(delayMs);
+                }
+
                 await _replacementEngine.ReplaceTextAsync(
                     backspaceCount,
                     item.Replacement,
@@ -243,11 +269,25 @@ namespace QuickReplace.Services
             if (vkCode == NativeMethods.VK_RETURN) return '\n';
             if (vkCode == NativeMethods.VK_TAB) return '\t';
 
+            // Shift와 CapsLock의 물리적 키 상태 확인
+            bool isShift = (NativeMethods.GetAsyncKeyState(NativeMethods.VK_SHIFT) & 0x8000) != 0;
+            bool isCapsLock = (NativeMethods.GetKeyState(0x14) & 1) != 0;
+
             byte[] keyboardState = new byte[256];
-            NativeMethods.GetKeyboardState(keyboardState);
+            if (isShift)
+            {
+                keyboardState[NativeMethods.VK_SHIFT] = 0x80;
+                keyboardState[0xA0] = 0x80; // VK_LSHIFT
+            }
+            if (isCapsLock)
+            {
+                keyboardState[0x14] = 0x01; // CapsLock Toggle
+            }
 
             var sb = new StringBuilder(10);
-            IntPtr hkl = NativeMethods.GetKeyboardLayout(0);
+            IntPtr hwnd = NativeMethods.GetForegroundWindow();
+            uint threadId = NativeMethods.GetWindowThreadProcessId(hwnd, out _);
+            IntPtr hkl = NativeMethods.GetKeyboardLayout(threadId);
 
             int result = NativeMethods.ToUnicodeEx(vkCode, scanCode, keyboardState, sb, sb.Capacity, 0, hkl);
             if (result > 0 && sb.Length > 0)
@@ -255,18 +295,53 @@ namespace QuickReplace.Services
                 return sb[0];
             }
 
-            if (vkCode >= 0x41 && vkCode <= 0x5A) // A-Z
+            // 1. 알파벳 (A-Z)
+            if (vkCode >= 0x41 && vkCode <= 0x5A)
             {
-                bool isShift = (NativeMethods.GetKeyState(NativeMethods.VK_SHIFT) & 0x8000) != 0;
+                bool upper = isShift ^ isCapsLock;
                 char c = (char)vkCode;
-                return isShift ? c : char.ToLower(c);
+                return upper ? c : char.ToLower(c);
             }
-            if (vkCode >= 0x30 && vkCode <= 0x39) // 0-9
+
+            // 2. 숫자 및 Shift 기호 (0-9 -> !@#$%^&*())
+            if (vkCode >= 0x30 && vkCode <= 0x39)
             {
+                if (isShift)
+                {
+                    return vkCode switch
+                    {
+                        0x31 => '!',
+                        0x32 => '@',
+                        0x33 => '#',
+                        0x34 => '$',
+                        0x35 => '%',
+                        0x36 => '^',
+                        0x37 => '&',
+                        0x38 => '*',
+                        0x39 => '(',
+                        0x30 => ')',
+                        _ => (char)vkCode
+                    };
+                }
                 return (char)vkCode;
             }
 
-            return '\0';
+            // 3. OEM 특수기호
+            return vkCode switch
+            {
+                0xBA => isShift ? ':' : ';',
+                0xBB => isShift ? '+' : '=',
+                0xBC => isShift ? '<' : ',',
+                0xBD => isShift ? '_' : '-',
+                0xBE => isShift ? '>' : '.',
+                0xBF => isShift ? '?' : '/',
+                0xC0 => isShift ? '~' : '`',
+                0xDB => isShift ? '{' : '[',
+                0xDC => isShift ? '|' : '\\',
+                0xDD => isShift ? '}' : ']',
+                0xDE => isShift ? '"' : '\'',
+                _ => '\0'
+            };
         }
 
         public void Dispose()

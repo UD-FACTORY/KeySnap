@@ -106,6 +106,36 @@ namespace QuickReplace.ViewModels
 
         public string SelectedTriggerHotkeyDisplay => string.IsNullOrWhiteSpace(SelectedTriggerHotkey) ? "Tab" : SelectedTriggerHotkey;
 
+        public bool IsHotkeyReplacementMode
+        {
+            get => Settings.ReplacementMode == ReplacementMode.Hotkey;
+            set
+            {
+                if (value && Settings.ReplacementMode != ReplacementMode.Hotkey)
+                {
+                    Settings.ReplacementMode = ReplacementMode.Hotkey;
+                    _storageService.SaveSettings(Settings);
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsInstantReplacementMode));
+                }
+            }
+        }
+
+        public bool IsInstantReplacementMode
+        {
+            get => Settings.ReplacementMode == ReplacementMode.Instant;
+            set
+            {
+                if (value && Settings.ReplacementMode != ReplacementMode.Instant)
+                {
+                    Settings.ReplacementMode = ReplacementMode.Instant;
+                    _storageService.SaveSettings(Settings);
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsHotkeyReplacementMode));
+                }
+            }
+        }
+
         public string SearchText
         {
             get => _searchText;
@@ -178,16 +208,16 @@ namespace QuickReplace.ViewModels
             KeyboardHookService hookService,
             TrayIconService trayService,
             AppSettings settings,
-            List<ShortcutItem> shortcuts,
-            List<ExclusionApp> exclusions)
+            ObservableCollection<ShortcutItem> shortcuts,
+            ObservableCollection<ExclusionApp> exclusions)
         {
             _storageService = storageService;
             _hookService = hookService;
             _trayService = trayService;
             _settings = settings;
 
-            Shortcuts = new ObservableCollection<ShortcutItem>(shortcuts);
-            Exclusions = new ObservableCollection<ExclusionApp>(exclusions);
+            Shortcuts = shortcuts;
+            Exclusions = exclusions;
 
             _shortcutsView = CollectionViewSource.GetDefaultView(Shortcuts);
             _shortcutsView.Filter = FilterShortcutItem;
@@ -260,8 +290,7 @@ namespace QuickReplace.ViewModels
 
             string query = SearchText.Trim();
             return (item.Shortcut?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                   (item.Replacement?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                   (item.Group?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false);
+                   (item.Replacement?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false);
         }
 
         private void ExecuteAddShortcut()

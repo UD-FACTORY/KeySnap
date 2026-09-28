@@ -10,8 +10,6 @@ namespace QuickReplace.ViewModels
         private string _shortcut = string.Empty;
         private string _replacement = string.Empty;
         private bool _isEnabled = true;
-        private TriggerMode _trigger = TriggerMode.Instant;
-        private string _group = "기본";
         private string _errorMessage = string.Empty;
 
         public ShortcutItem OriginalItem { get; }
@@ -35,36 +33,6 @@ namespace QuickReplace.ViewModels
             set => SetField(ref _isEnabled, value);
         }
 
-        public TriggerMode Trigger
-        {
-            get => _trigger;
-            set => SetField(ref _trigger, value);
-        }
-
-        public bool IsInstantTrigger
-        {
-            get => _trigger == TriggerMode.Instant;
-            set
-            {
-                if (value) Trigger = TriggerMode.Instant;
-            }
-        }
-
-        public bool IsKeyTrigger
-        {
-            get => _trigger == TriggerMode.TriggerKey;
-            set
-            {
-                if (value) Trigger = TriggerMode.TriggerKey;
-            }
-        }
-
-        public string Group
-        {
-            get => _group;
-            set => SetField(ref _group, value);
-        }
-
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -86,8 +54,6 @@ namespace QuickReplace.ViewModels
                 _shortcut = item.Shortcut;
                 _replacement = item.Replacement;
                 _isEnabled = item.IsEnabled;
-                _trigger = item.Trigger;
-                _group = string.IsNullOrEmpty(item.Group) ? "기본" : item.Group;
             }
             else
             {
@@ -129,8 +95,6 @@ namespace QuickReplace.ViewModels
             OriginalItem.Shortcut = Shortcut.Trim();
             OriginalItem.Replacement = Replacement;
             OriginalItem.IsEnabled = IsEnabled;
-            OriginalItem.Trigger = Trigger;
-            OriginalItem.Group = string.IsNullOrWhiteSpace(Group) ? "기본" : Group.Trim();
 
             RequestClose?.Invoke(true);
             return true;

@@ -187,56 +187,42 @@ namespace QuickReplace.Services
                 {
                     Shortcut = "ㅇㅈ",
                     Replacement = "인정합니다. 👍",
-                    Trigger = TriggerMode.Instant,
-                    Group = "일상",
                     IsEnabled = true
                 },
                 new()
                 {
                     Shortcut = "ㄱㅅ",
                     Replacement = "감사합니다! 좋은 하루 보내세요. 😊",
-                    Trigger = TriggerMode.Instant,
-                    Group = "인사",
                     IsEnabled = true
                 },
                 new()
                 {
                     Shortcut = "ㅈㄱ",
                     Replacement = "지금 통화 가능하신가요?",
-                    Trigger = TriggerMode.Instant,
-                    Group = "업무",
                     IsEnabled = true
                 },
                 new()
                 {
                     Shortcut = "!email",
                     Replacement = "user@example.com",
-                    Trigger = TriggerMode.Instant,
-                    Group = "개인정보",
                     IsEnabled = true
                 },
                 new()
                 {
                     Shortcut = "!date",
                     Replacement = "{{today}}",
-                    Trigger = TriggerMode.Instant,
-                    Group = "매크로",
                     IsEnabled = true
                 },
                 new()
                 {
                     Shortcut = "!time",
                     Replacement = "{{time}}",
-                    Trigger = TriggerMode.Instant,
-                    Group = "매크로",
                     IsEnabled = true
                 },
                 new()
                 {
                     Shortcut = "btw",
                     Replacement = "by the way",
-                    Trigger = TriggerMode.TriggerKey,
-                    Group = "영어",
                     IsEnabled = true
                 }
             };

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using QuickReplace.Models;
 using QuickReplace.Services;
 using QuickReplace.ViewModels;
 using QuickReplace.Views;
@@ -23,8 +25,11 @@ namespace QuickReplace
                 // 1. 서비스 초기화
                 _storageService = new StorageService();
                 var settings = _storageService.LoadSettings();
-                var shortcuts = _storageService.LoadShortcuts();
-                var exclusions = _storageService.LoadExclusions();
+                var shortcutsList = _storageService.LoadShortcuts();
+                var exclusionsList = _storageService.LoadExclusions();
+
+                var shortcuts = new ObservableCollection<ShortcutItem>(shortcutsList);
+                var exclusions = new ObservableCollection<ExclusionApp>(exclusionsList);
 
                 var macroService = new MacroService();
                 var appWatcher = new ForegroundAppWatcher();
